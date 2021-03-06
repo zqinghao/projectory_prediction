@@ -114,7 +114,7 @@ for i in range(50): # Simulate 50 * 10 ms
 retval = np.dot(input_X, B)
 xy_split = retval.T
 
-result = []
+result = [[0., 0.]]
 pos = 0
 for y in xy_split[1]:
     if y > 0:         # Choose points above x axis
