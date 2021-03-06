@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[89]:
+# In[103]:
 
 
 import numpy as np
@@ -20,9 +20,9 @@ vx_0 = 0.707106781187
 vy_0 = 0.658106781187
 
 # Uncomment below in .py file to read input from command line
-if sys.argv[1] != vx_0 or sys.argv[2] != vy_0:
-    vx_0 = sys.argv[1]
-    vy_0 = sys.argv[2]
+if len(sys.argv) > 1 and (float(sys.argv[1]) != vx_0 or float(sys.argv[2]) != vy_0):
+    vx_0 = float(sys.argv[1])
+    vy_0 = float(sys.argv[2])
 
 # Store data from the csv file
 
@@ -38,7 +38,7 @@ file.close()
 #print(data)
 
 
-# In[90]:
+# In[126]:
 
 
 # Establish X (input, (vx*t, vy*t, t^2, t, 1))
@@ -56,6 +56,7 @@ for point in data:
         vx_t = initial_vx
         vy_t = initial_vy
         X.append([vx_t, vy_t, t**2, t, 1])
+        t += 1
     elif point[time_idx] > 1:
         vx_t = initial_vx * t
         vy_t = initial_vy * t
@@ -70,7 +71,7 @@ for point in data:
 #print(np.array(X).shape)
 
 
-# In[91]:
+# In[127]:
 
 
 # Establish Y (output, point (x,y))
@@ -83,7 +84,7 @@ for point in data:
 #print(np.array(Y))
 
 
-# In[92]:
+# In[128]:
 
 
 # Calculate the least sqare solution B
@@ -92,7 +93,7 @@ B = np.linalg.lstsq(np.array(X), np.array(Y), rcond=None)[0]
 #print(B)
 
 
-# In[94]:
+# In[124]:
 
 
 # Initialize the problem
@@ -100,12 +101,12 @@ B = np.linalg.lstsq(np.array(X), np.array(Y), rcond=None)[0]
 input_X = []
 for i in range(50): # Simulate 50 * 10 ms
     vx_t = vx_0 * i
-    vy_t = vx_0 * i
+    vy_t = vy_0 * i
     input_X.append([vx_t, vy_t, i**2, i, 1])
 #print(input_X)
 
 
-# In[95]:
+# In[137]:
 
 
 # Show results
@@ -118,7 +119,7 @@ pos = 0
 for y in xy_split[1]:
     if y > 0:         # Choose points above x axis
         result.append([xy_split[0][pos], y])
-        pos += 1
+    pos += 1
 result = np.array(result)
 result_len = len(result)
 
